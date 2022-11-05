@@ -13,11 +13,11 @@ The document assumes you are new to Mac, but can also be useful if you are reins
 - [Homebrew](#homebrew)
 - [Git](#git)
 - [Visual Studio Code](#visual-studio-code)
+- [Docker](#docker)
 - [Vim](#vim)
 - [Python](#python)
 - [Node.js](#nodejs)
-- [Ruby](#ruby)
-- [Heroku](#heroku)
+- [Java](#java)
 - [PostgreSQL](#postgresql)
 - [Redis](#redis)
 - [Elasticsearch](#elasticsearch)
@@ -82,12 +82,11 @@ Then, in **iTerm2 Preferences**, under **Profiles** and **Colors**, go to **Colo
 
 Not a lot of colors yet. We need to tweak a little bit our Unix user's profile for that. This is done (on macOS and Linux), in the `~/.bash_profile` text file (`~` stands for the user's home directory).
 
-We'll come back to the details of that later, but for now, just download the files [.bash_profile](https://raw.githubusercontent.com/nicolashery/mac-dev-setup/master/.bash_profile), [.bash_prompt](https://raw.githubusercontent.com/nicolashery/mac-dev-setup/master/.bash_prompt), [.aliases](https://raw.githubusercontent.com/nicolashery/mac-dev-setup/master/.aliases) attached to this document into your home directory (`.bash_profile` is the one that gets loaded, I've set it up to call the others):
+We'll come back to the details of that later, but for now, just download the files [.bash_profile](https://raw.githubusercontent.com/nicolashery/mac-dev-setup/master/.bash_profile), [.aliases](https://raw.githubusercontent.com/nicolashery/mac-dev-setup/master/.aliases) attached to this document into your home directory (`.bash_profile` is the one that gets loaded, I've set it up to call the others):
 
 ```
 cd ~
 curl -O https://raw.githubusercontent.com/nicolashery/mac-dev-setup/master/.bash_profile
-curl -O https://raw.githubusercontent.com/nicolashery/mac-dev-setup/master/.bash_prompt
 curl -O https://raw.githubusercontent.com/nicolashery/mac-dev-setup/master/.aliases
 ```
 
@@ -112,7 +111,7 @@ xcode-select --install
 Once that is done, we can install Homebrew by copy-pasting the installation command from the [Homebrew homepage](http://brew.sh/) inside the terminal:
 
 ```
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
 
 Follow the steps on the screen. You will be prompted for your user password so Homebrew can set up the appropriate permissions.
@@ -305,7 +304,7 @@ source ~/.bash_profile
 Before installing a new Python version, the [pyenv wiki](https://github.com/pyenv/pyenv/wiki) recommends having a few dependencies available:
 
 ```
-brew install openssl readline sqlite3 xz zlib
+brew install openssl readline xz
 ```
 
 We can now list all available Python versions by running:
@@ -602,119 +601,77 @@ To uninstall a package:
 npm uninstall --save <package>
 ```
 
-## Ruby
+## Java
 
-Like Python, [Ruby](http://www.ruby-lang.org/) is already installed on Unix systems. But we don't want to mess around with that installation. More importantly, we want to be able to use the latest version of Ruby.
+The recommended way to install Java is to use [SDKman](https://sdkman.io/) (Software development kit Management) which allows you to manage multiple versions of Java on the same machine and 
 
 ### Install
 
-The recommended way to install Ruby is to use [rbenv](https://github.com/rbenv/rbenv), which allows you to manage multiple versions of Ruby on the same machine. You can install `rbenv` with Homebrew:
-
 ```
-brew install rbenv
-```
-
-After installation, add the following line to your `.bash_profile`:
-
-```bash
-eval "$(rbenv init -)"
-```
-
-And reload it with:
-
-```
-source ~/.bash_profile
+curl -s "https://get.sdkman.io" | bash
 ```
 
 ### Usage
 
-The following command will show you which versions of Ruby are available to install:
+The following command will show you which versions of Java are available to install:
 
 ```
-rbenv install --list
+sdk list java
 ```
 
 You can find the latest version in that list and install it with (replace `.x.x` with actual version numbers):
 
 ```
-rbenv install 2.x.x
+sdk install java 19.x.x
 ```
 
-Run the following to see which versions you have installed:
+Select the version you want to use
 
 ```
-rbenv versions
+sdk use java 11.x.x
 ```
 
-The start (`*`) will show you that we are currently using the default `system` version. You can switch your terminal to use the one you just installed:
+### Manage Java tools
+Check all Java softwares available [here](https://sdkman.io/sdks)
+
+Install Maven
 
 ```
-rbenv shell 2.x.x
+sdk install maven
 ```
 
-You can also set it as the default version if you want:
+Install VisualVM
 
 ```
-rbenv global 2.x.x
+sdk install visualvm
 ```
 
-In a specific project's directory, you can ask `rbenv` to create a `.ruby-version` file. Next time you enter that project's directory from the terminal, it will automatically load the correct Ruby version:
+## Docker
 
-```
-rbenv local 2.x.x
-```
+[Docker](https://www.docker.com/)  is a set of platform-as-a-service (PaaS) products that use OS-level virtualization to deliver software in packages called containers. Containers are isolated from one another and bundle their own software, libraries and configuration files; they can communicate with each other through well-defined channels. All containers are run by a single operating-system kernel and are thus more lightweight than virtual machines.
 
-Check anytime which version you are using with:
+### Install
 
-```
-rbenv version
-```
+Download the version of docker for osx you want, check [here](https://docs.docker.com/install/overview/)
 
-See [rbenv's command reference](https://github.com/rbenv/rbenv#command-reference) for more information.
+Create an account [here](https://hub.docker.com/)
 
-### RubyGems & Bundler
+Then you can download [here](https://hub.docker.com/?overlay=onboarding)
 
-[RubyGems](http://rubygems.org/), the Ruby package manager, was also installed:
+Follow all the steps and congrats!You should have downloaded docker
 
-```
-which gem
-```
+### GUI
 
-The first thing you want to do after installing a new Ruby version is to install [Bundler](https://bundler.io/). This tool will allow you to set up separate environments for your different Ruby projects, so their required gem versions won't conflict with each other. Install Bundler with:
+From the `docker ps` you can access to the containers that are running,logs,volumes etc. But you can install portrainer to have a GUI to check whats running and get some logs etc.
 
-```
-gem install bundler
+For install you can run this:
+
+```bash
+docker volume create portainer_data
+docker run -d -p 8000:8000 -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
 ```
 
-In a new Ruby project directory, create a new `Gemfile` with:
-
-```
-bundle init
-```
-
-Add a dependency to the `Gemfile`, for example the [Jekyll]() static site generator:
-
-```ruby
-source "https://rubygems.org"
-
-gem "jekyll"
-```
-
-Then install the project's dependencies with:
-
-```
-bundle install
-```
-
-Make sure you check in both the `Gemfile` and `Gemfile.lock` into your Git repository.
-
-Update a specific dependency with:
-
-```
-bundle update <gem>
-```
-
-For more information, see the [Bundler documentation](https://bundler.io/docs.html).
+Then you can go to localhost:9000 to see the web interface
 
 ## Heroku
 
