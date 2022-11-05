@@ -28,6 +28,13 @@ The document assumes you are new to Mac, but can also be useful if you are reins
 
 First thing you need to do, on any OS actually, is update the system! For that: **Apple Icon > About This Mac** then **Software Update...**.
 
+
+## Apple M1 chips
+Install the Rosetta2 emulator for the new ARM silicon (M1 chip). Install Rosetta2 using the terminal:
+```
+softwareupdate --install-rosetta --agree-to-license
+```
+
 ## System preferences
 
 If this is a new computer, there are a couple of tweaks I like to make to the System Preferences. Feel free to follow these, or to ignore them, depending on your personal preferences.
@@ -95,6 +102,41 @@ With that, open a new terminal tab (**Cmd+T**) and see the change! Try the list 
 Now we have a terminal we can work with!
 
 (Thanks to Mathias Bynens for his awesome [dotfiles](https://github.com/mathiasbynens/dotfiles).)
+
+### Install oh-my-zsh
+
+ZSH is already preinstalled in the latest versions of macOS. I also install https://ohmyz.sh/ as it allows for more configuration and is required in some cases.
+
+```
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+Install the Oh My Zsh plugins below
+```
+brew install zsh-autosuggestions
+brew install zsh-syntax-highlighting
+```
+
+To activate the plugins, add the following at the end of your .zshrc:
+```
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+```
+
+
+You will also need to force reload of your .zshrc:
+
+```
+source ~/.zshrc
+```
+
+## Show all hidden files
+Use the command line to show all hidden files as the files you are searching for are going to be hidden by default.
+
+```
+defaults write com.apple.Finder AppleShowAllFiles true
+killall Finder
+```
 
 ## Homebrew
 
@@ -599,6 +641,14 @@ To uninstall a package:
 
 ```
 npm uninstall --save <package>
+```
+
+### Yarn
+
+Is a alternative package manage to npm
+
+```
+brew install yarn --without-node
 ```
 
 ## Java
