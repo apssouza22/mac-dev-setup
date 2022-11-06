@@ -123,6 +123,7 @@ source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ```
 
+Add the `source ~/.bash_profile` to .zshrc
 
 You will also need to force reload of your .zshrc:
 
