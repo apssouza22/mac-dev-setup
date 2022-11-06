@@ -1,15 +1,19 @@
 # macOS Dev Setup
 
-This document describes how I set up my developer environment on a new MacBook or iMac. We will set up popular programming languages (for example [Node](http://nodejs.org/) (JavaScript), [Python](http://www.python.org/), and [Ruby](http://www.ruby-lang.org/)). You may not need all of them for your projects, although I recommend having them set up as they always come in handy.
+This document describes how I set up my developer environment on a new MacBook. We will set up popular programming languages (for example [Node](http://nodejs.org/) (JavaScript), [Python](http://www.python.org/), and [Java](https://www.java.com/)). You may not need all of them for your projects, although I recommend having them set up as they always come in handy.
 
-The document assumes you are new to Mac, but can also be useful if you are reinstalling a system and need some reminder. The steps below were tested on **macOS High Sierra** (10.13), but should work for more recent versions as well.
+The document assumes you are new to Mac, but can also be useful if you are reinstalling a system and need some reminder. The steps below were tested on **macOS Monterey** (12.03), but should work for more recent versions as well.
 
-**Contributing**: If you find any mistakes in the steps described below, or if any of the commands are outdated, do let me know! For any other suggestions, please understand if I don't include everything. This guide was originally written for some friends getting started with programming on a Mac, and as a personal reference for myself. I'm trying to keep it simple!
+**Contributing**: If you find any mistakes in the steps described below, or if any of the commands are outdated, do let me know!
 
 - [System update](#system-update)
+- [Apple M1 chips](#apple-m1-chips)
 - [System preferences](#system-preferences)
 - [Security](#security)
 - [iTerm2](#iterm2)
+- [Install oh-my-zsh](#install-oh-my-zsh)
+- [Create ssh key](#create-ssh-key)
+- [Show all hidden files](#show-all-hidden-files)
 - [Homebrew](#homebrew)
 - [Git](#git)
 - [Visual Studio Code](#visual-studio-code)
@@ -42,6 +46,8 @@ If this is a new computer, there are a couple of tweaks I like to make to the Sy
 In **Apple Icon > System Preferences**:
 
 - Trackpad > Tap to click
+- Trackpad > Tracking speed > Fast (all the way to the right) 
+- Mouse > Tracking speed > Fast (all the way to the right) 
 - Keyboard > Key Repeat > Fast (all the way to the right)
 - Keyboard > Delay Until Repeat > Short (all the way to the right)
 - Dock > Automatically hide and show the Dock
@@ -59,49 +65,12 @@ In **Apple Icon > System Preferences**:
 
 ## iTerm2
 
-### Install
-
 Since we're going to be spending a lot of time in the command-line, let's install a better terminal than the default one. Download and install [iTerm2](http://www.iterm2.com/).
 
 In **Finder**, drag and drop the **iTerm** Application file into the **Applications** folder.
 
 You can now launch iTerm, through the **Launchpad** for instance.
 
-Let's just quickly change some preferences. In **iTerm2 > Preferences...**, under the tab **General**, uncheck **Confirm closing multiple sessions** and **Confirm "Quit iTerm2 (Cmd+Q)" command** under the section **Closing**.
-
-In the tab **Profiles**, create a new one with the "+" icon, and rename it to your first name for example. Then, select **Other Actions... > Set as Default**. Under the section **General** set **Working Directory** to be **Reuse previous session's directory**. Finally, under the section **Window**, change the size to something better, like **Columns: 125** and **Rows: 35**.
-
-When done, hit the red "X" in the upper left (saving is automatic in macOS preference panes). Close the window and open a new one to see the size change.
-
-### Beautiful terminal
-
-Since we spend so much time in the terminal, we should try to make it a more pleasant and colorful place. What follows might seem like a lot of work, but trust me, it'll make the development experience so much better.
-
-First let's add some color. There are many great color schemes out there, but if you don't know where to start you can try [Atom One Dark](https://github.com/nathanbuchar/atom-one-dark-terminal). Download the iTerm presets for the theme by running:
-
-```
-cd ~/Downloads
-curl -o "Atom One Dark.itermcolors" https://raw.githubusercontent.com/nathanbuchar/atom-one-dark-terminal/master/scheme/iterm/One%20Dark.itermcolors
-curl -o "Atom One Light.itermcolors" https://raw.githubusercontent.com/nathanbuchar/atom-one-dark-terminal/master/scheme/iterm/One%20Light.itermcolors
-```
-
-Then, in **iTerm2 Preferences**, under **Profiles** and **Colors**, go to **Color Presets... > Import...**, find and open the **Atom One Dark.itermcolors** file we just downloaded. Repeat these steps for **Atom One Light.itermcolors**.  Now open **Color Presets...** again and select **Atom One Dark** to activate the dark theme (or choose the light them if that's your preference).
-
-Not a lot of colors yet. We need to tweak a little bit our Unix user's profile for that. This is done (on macOS and Linux), in the `~/.bash_profile` text file (`~` stands for the user's home directory).
-
-We'll come back to the details of that later, but for now, just download the files [.bash_profile](https://raw.githubusercontent.com/nicolashery/mac-dev-setup/master/.bash_profile), [.aliases](https://raw.githubusercontent.com/nicolashery/mac-dev-setup/master/.aliases) attached to this document into your home directory (`.bash_profile` is the one that gets loaded, I've set it up to call the others):
-
-```
-cd ~
-curl -O https://raw.githubusercontent.com/nicolashery/mac-dev-setup/master/.bash_profile
-curl -O https://raw.githubusercontent.com/nicolashery/mac-dev-setup/master/.aliases
-```
-
-With that, open a new terminal tab (**Cmd+T**) and see the change! Try the list commands: `ls`, `ls -lh` (aliased to `ll`), `ls -lha` (aliased to `la`).
-
-Now we have a terminal we can work with!
-
-(Thanks to Mathias Bynens for his awesome [dotfiles](https://github.com/mathiasbynens/dotfiles).)
 
 ### Install oh-my-zsh
 
