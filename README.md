@@ -130,6 +130,22 @@ You will also need to force reload of your .zshrc:
 source ~/.zshrc
 ```
 
+## Create ssh key
+
+Execute the command below to begin the key creation. Press enter all the way to the end
+```
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+Add the new SSH key to the local SSH agent.
+```
+ssh-add -K /Users/YOUR_USER/.ssh/id_rsa
+```
+
+Get the generated public key
+```
+cat /Users/alexsouza/.ssh/id_rsa.pub
+```
+
 ## Show all hidden files
 Use the command line to show all hidden files as the files you are searching for are going to be hidden by default.
 
